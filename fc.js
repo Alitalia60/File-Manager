@@ -1,10 +1,10 @@
 import { createInterface } from 'node:readline';
 
-import { messages, fcOptions } from './lib/constants.js';
-import { parseCmd } from './lib/cmd-parsing.js';
-import './lib/init.js'
-import { showCurrentDir } from './lib/utils.js';
-import { showError } from './lib/errors.js';
+import { messages, commandsList, fcOptions } from './utils/constants.js';
+import { parseCmd } from './utils/cmd-parse.js';
+import './utils/init.js'
+import { showCurrentDir } from './utils/utils.js';
+import { validateCmd } from './validators/cmd-validate.js';
 
 const rl = createInterface({
   input: process.stdin,
@@ -25,26 +25,23 @@ rl.on('line', (data) => {
   if (data === '.exit') {
     rl.close();
   } else {
-    parseCmd(data)
-      .then((value) => {
-        const { cmdToExec, argList } = value;
-        cmdToExec(...argList)
-          .then(() => {
-            showCurrentDir();
-            rl.prompt()
-          })
-          .catch(err => {
-            console.log('cmdToExec error ', err);
-            rl.prompt()
-          });
-        ;
-      })
-      .catch((err) => {
-        // showError(err);
-        showError('fail');
-        showCurrentDir();
-        rl.prompt()
-      });
+    const cmdWithArgs = parseCmd(data);
+
+    //!! debug -----------------
+    console.log('cmdWithArgs=', cmdWithArgs);
+
+    if (validateCmd(cmdWithArgs)) {
+      commandsList[cmdWithArgs.cmd]['action'](...cmdWithArgs.argsList)
+        .then(() => {
+          showCurrentDir();
+          rl.prompt();
+        });
+    }
+    else {
+      // console.log('error ', cmdWithArgs.cmd);
+      showCurrentDir();
+      rl.prompt();
+    };
   };
 })
 
