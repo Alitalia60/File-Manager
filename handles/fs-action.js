@@ -1,6 +1,8 @@
-import fs from 'node:fs';
+// import fs from 'node:fs';
+import * as fsPromices from 'node:fs/promises';
+import  {createReadStream} from 'node:fs';
 import { stdout } from 'process';
-import { pipeline } from 'stream';
+import { pipeline } from 'node:stream/promises';
 import { fcOptions } from '../utils/constants.js';
 import { showError } from '../utils/errors.js';
 
@@ -10,15 +12,15 @@ import { showError } from '../utils/errors.js';
 * @param: {string} fileURI
 */
 export const cat = async (fileURI) => {
-  
+
   // TODO check fileURI exist
 
-  const fileRS = fs.createReadStream(fileURI);
-  pipeline(fileRS, stdout, (err) => {
+  const fileRS = createReadStream(fileURI);
+  return await pipeline(fileRS, stdout, (err) => {
     if (err) {
       showError(`erorr cat-command, ${err.code}`)
     }
-  })
+  }).then();
 }
 
 /**
@@ -28,16 +30,7 @@ export const cat = async (fileURI) => {
 * @param: {string} target - name of copy
 */
 export const cp = async (source, target) => {
-  
-  // TODO check source exist
-
-  fs.cp(source, target, (err) => {
-    if (err) {
-      console.error('ls ', err.code);
-    } else {
-      console.log('...file copied successfully.');
-    }
-  })
+ return await fsPromices.cp(source, target);
 }
 
 /**
@@ -45,15 +38,10 @@ export const cp = async (source, target) => {
 * @function ls 
 */
 export const ls = async () => {
-  fs.readdir(fcOptions.currentDir, (err, files) => {
-    if (err) {
-      console.error('ls ', err.code);
-    }
-    // console.table(files);
-    for (const file of files) {
-      console.log(file);
-    }
-  });
+  const files = await fsPromices.readdir(fcOptions.currentDir);
+  for (const file of files) {
+    console.log(file);
+  }
 }
 
 /**
@@ -63,41 +51,16 @@ export const ls = async () => {
 * @param: {string} target - new place
 */
 export const mv = async (source, target) => {
-  
-  // TODO check source exist
-
-  fs.cp(source, target, (err) => {
-    if (err) {
-      showError(`Error moving ${source} ${err.code}`)
-    } else {
-      fs.rm(source, (err) => {
-        if (err) {
-          showError(`Error moving ${source} ${err.code}`)
-        }
-        else {
-          console.log('...file moved successfully.');
-        }
-      });
-    }
-  })
+  return await fsPromices.cp(source, target).then(fsPromices.rm(source));
 }
 
 /**
 * remove file  
-* @function rm 
+* @function remove 
 * @param: {string} fileURI
 */
-export const rm = async (fileURI) => {
-  
-  // TODO check source exist
-
-  fs.rm(fileURI, (err) => {
-    if (err) {
-      showError(`Error removing ${fileURI} ${err.code}`)
-    } else {
-      console.log('...file removed successfully.');
-    }
-  });
+export const remove = async (fileURI) => {
+  return await fsPromices.rm(fileURI);
 }
 
 /**
@@ -107,17 +70,8 @@ export const rm = async (fileURI) => {
 * @param: {string} target - new name
 */
 export const rn = async (source, target) => {
-  
-  // TODO check source exist
-  
-  fs.rename(source, target, (err) => {
-    if (err) {
-      showError(`Error renaming ${fileURI} ${err.code}`)
-    }
-    else{
-      console.log('...file renamed successfully.');
-    }
-  });
+  return await fsPromices.rename(source, target);
+
 }
 
 /**
@@ -126,12 +80,5 @@ export const rn = async (source, target) => {
  * @param: {string} fileName 
  */
 export const add = async (fileName) => {
-  
-  fs.appendFile(fileName, '', (err) => {
-    if (err) {
-      showError(`Error create ${fileName} ${err.code}`)
-    }else{
-      console.log('...file created successfully.');
-    }
-  })
+  return await fsPromices.appendFile(fileName, '')
 }

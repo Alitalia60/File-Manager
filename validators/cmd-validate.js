@@ -11,16 +11,16 @@ export const validateCmd = (cmdWithArgs) => {
   const argList = cmdWithArgs.argsList;
 
   if (!Object.keys(commandsList).includes(command)) {
-    showError(`    Wrong command < ${command} >`);
+    showError(`Wrong command < ${command} >`);
     return false;
   }
   if (argList.length < commandsList[command]['minArgs']) {
-    showError(`    Wrong or missing argument(s) for < ${command} >`);
+    showError(`Wrong or missing argument(s) for < ${command} >`);
     return false
   }
   if (commandsList[command]['prefix'] && argList[0]) {
     if (!argList[0].startsWith(commandsList[command]['prefix'])) {
-      showError(`    Wrong or absent argument for < ${command} >`);
+      showError(`Wrong or absent argument for < ${command} >`);
       return false
     }
   };

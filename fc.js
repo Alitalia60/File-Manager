@@ -5,6 +5,8 @@ import { parseCmd } from './utils/cmd-parse.js';
 import './utils/init.js'
 import { showCurrentDir } from './utils/utils.js';
 import { validateCmd } from './validators/cmd-validate.js';
+import { showError } from './utils/errors.js';
+import { SourceMap } from 'node:module';
 
 const rl = createInterface({
   input: process.stdin,
@@ -33,8 +35,15 @@ rl.on('line', (data) => {
     if (validateCmd(cmdWithArgs)) {
       commandsList[cmdWithArgs.cmd]['action'](...cmdWithArgs.argsList)
         .then(() => {
+          console.log('...then');
           showCurrentDir();
           rl.prompt();
+        })
+        .catch((err)=>{
+          console.log('...catch');
+          showError(err);
+          showCurrentDir();
+          rl.prompt()
         });
     }
     else {

@@ -25,7 +25,7 @@ export const commandsList = {
   rn: { action: fsAction.rn, minArgs: 2 },
   cp: { action: fsAction.cp, minArgs: 2 },
   mv: { action: fsAction.mv, minArgs: 2 },
-  rm: { action: fsAction.rm, minArgs: 1 },
+  rm: { action: fsAction.remove, minArgs: 1 },
   os: { action: osAction.osInfo, minArgs: 1, prefix: '--' },
   hash: { action: hashAction.hash, minArgs: 1 },
   compress: { action: zipAction.compress, minArgs: 1 },
