@@ -9,11 +9,11 @@ export const fcOptions = {
 }
 
 export const messages = {
-  welcome: '    Welcome to the File Manager, ',
-  bye: '    Thank you for using File Manager, ',
-  homeFolder: '    You are currently in ',
-  invalidCommand: '    Invalid input',
-  failed: '    Operation faled'
+  welcome: 'Welcome to the File Manager, ',
+  bye: 'Thank you for using File Manager, ',
+  homeFolder: 'You are currently in ',
+  invalidCommand: 'Invalid input',
+  failed: 'Operation faled'
 }
 
 export const commandsList = {

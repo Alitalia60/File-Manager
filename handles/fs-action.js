@@ -1,6 +1,6 @@
 // import fs from 'node:fs';
 import * as fsPromices from 'node:fs/promises';
-import  {createReadStream} from 'node:fs';
+import { createReadStream } from 'node:fs';
 import { stdout } from 'process';
 import { pipeline } from 'node:stream/promises';
 import { fcOptions } from '../utils/constants.js';
@@ -12,15 +12,31 @@ import { showError } from '../utils/errors.js';
 * @param: {string} fileURI
 */
 export const cat = async (fileURI) => {
+  // TODO check source exist
+  return new Promise((res, rej) => {
+    try {
+      const sourceRS = createReadStream(fileURI)
+        .on('error', (err) => {
+          console.log('createReadStream eror');
+          rej(err);
+          return;
+        })
+        .on('ready', () => {
+          sourceRS.pipe(stdout)
+            .on('error', (err) => {
+              console.log('pipe eror');
+              rej(err)
+            })
+            .on('end', ()=>console.log('end'));
+        });
+    } catch (err) {
+      rej(err);
+      return;
+    };
+  });
 
-  // TODO check fileURI exist
-
-  const fileRS = createReadStream(fileURI);
-  return await pipeline(fileRS, stdout, (err) => {
-    if (err) {
-      showError(`erorr cat-command, ${err.code}`)
-    }
-  }).then();
+  // const fileRS = createReadStream(fileURI);
+  // return pipeline(fileRS, stdout);
 }
 
 /**
@@ -30,7 +46,7 @@ export const cat = async (fileURI) => {
 * @param: {string} target - name of copy
 */
 export const cp = async (source, target) => {
- return await fsPromices.cp(source, target);
+  return await fsPromices.cp(source, target);
 }
 
 /**

@@ -28,26 +28,25 @@ rl.on('line', (data) => {
     rl.close();
   } else {
     const cmdWithArgs = parseCmd(data);
+    if (cmdWithArgs.cmd) {
 
-    //!! debug -----------------
-    console.log('cmdWithArgs=', cmdWithArgs);
+      //!! debug -----------------
+      // console.log('cmdWithArgs=', cmdWithArgs);
 
-    if (validateCmd(cmdWithArgs)) {
-      commandsList[cmdWithArgs.cmd]['action'](...cmdWithArgs.argsList)
-        .then(() => {
-          console.log('...then');
-          showCurrentDir();
-          rl.prompt();
-        })
-        .catch((err)=>{
-          console.log('...catch');
-          showError(err);
-          showCurrentDir();
-          rl.prompt()
-        });
-    }
-    else {
-      // console.log('error ', cmdWithArgs.cmd);
+      if (validateCmd(cmdWithArgs)) {
+        commandsList[cmdWithArgs.cmd]['action'](...cmdWithArgs.argsList)
+          .then((data) => console.log('...then', data))
+          .catch(err => {
+            console.log('...catch');
+            showError(err)
+          })
+          .finally(() => {
+            console.log('...finally');
+            showCurrentDir();
+            rl.prompt()
+          });
+      }
+    } else {
       showCurrentDir();
       rl.prompt();
     };

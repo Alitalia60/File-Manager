@@ -3,7 +3,7 @@ import { showError } from '../utils/errors.js';
 
 /**
 * @function validateCmd 
-* @param: {object} cmdWithArgs
+* @param: {object} cmdWithArgs - {cmd: string, argList:[array]}
 * @returns {boolean}
 */
 export const validateCmd = (cmdWithArgs) => {

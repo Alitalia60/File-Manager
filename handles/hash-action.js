@@ -1,4 +1,7 @@
-import { showCurrentDir } from '../utils/utils.js'
+import { createHash } from 'node:crypto';
+import fs from 'node:fs';
+
+import { showError } from '../utils/errors.js';
 
 /**
 * calculate hash of fileURI 
@@ -6,7 +9,27 @@ import { showCurrentDir } from '../utils/utils.js'
 * @param: {string} fileURI
 */
 export const hash = async (fileURI) => {
-  const hash = createHash('sha256');
-  const input = createReadStream(fileURI);
-  input.pipe(hash).setEncoding('hex').pipe(stdout);
+
+  const hash256 = createHash('sha256');
+  hash256.setEncoding('hex');
+  return await new Promise((res, rej) => {
+    fs.stat(fileURI, (err, stats) => {
+      if (err) {
+        rej(err)
+      }
+      else {
+        if (!stats.isFile()) {
+          rej(`${fileURI}not a file`)
+        } else {
+          const fileRS = fs.createReadStream(fileURI);
+          fileRS.on('close', () => {
+            res()
+          });
+          fileRS.pipe(hash256)
+            .pipe(process.stdout)
+            .on('error', (err) => rej(err));
+        }
+      }
+    })
+  });
 }

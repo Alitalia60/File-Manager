@@ -14,11 +14,14 @@ export const upFolder = async () => {
 */
 export const changeFolder = async (dirNAme) => {
 
-  try {
-    process.chdir(path.resolve(fcOptions.currentDir, dirNAme));
-    fcOptions.currentDir = path.resolve(fcOptions.currentDir, dirNAme);
-  } catch (err) {
-    showError(`chdir: ${err}`)
-  }
+  return await new Promise((res, rej) => {
+    try {
+      process.chdir(path.resolve(fcOptions.currentDir, dirNAme));
+      fcOptions.currentDir = path.resolve(fcOptions.currentDir, dirNAme);
+      res();
+    } catch (err) {
+      rej(err);
+    }
+  });
 }
 
