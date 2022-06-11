@@ -1,8 +1,8 @@
-import * as fsAction from '../handles/fs-action.js'
+import * as fsAction from '../handles/basic-action.js'
 import * as osAction from '../handles/os-action.js'
 import * as hashAction from '../handles/hash-action.js'
-import * as dirAction from '../handles/dir-action.js'
-import * as zipAction from '../handles/zip-action.js'
+import * as dirAction from '../handles/nwd-action.js'
+import * as arhAction from '../handles/compress-action.js'
 export const fcOptions = {
   currentDir: null,
   currentUser: null,
@@ -28,6 +28,6 @@ export const commandsList = {
   rm: { action: fsAction.remove, minArgs: 1 },
   os: { action: osAction.osInfo, minArgs: 1, prefix: '--' },
   hash: { action: hashAction.hash, minArgs: 1 },
-  compress: { action: zipAction.compress, minArgs: 2 },
-  decompress: { action: zipAction.decompress, minArgs: 2 },
+  compress: { action: arhAction.compress, minArgs: 2 },
+  decompress: { action: arhAction.decompress, minArgs: 2 },
 }

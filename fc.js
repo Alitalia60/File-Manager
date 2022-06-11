@@ -5,7 +5,7 @@ import { parseCmd } from './utils/cmd-parse.js';
 import './utils/init.js'
 import { showCurrentDir } from './utils/utils.js';
 import { validateCmd } from './validators/cmd-validate.js';
-import { showError } from './utils/errors.js';
+import { FCError, showError } from './utils/errors.js';
 import { SourceMap } from 'node:module';
 
 const rl = createInterface({
@@ -37,7 +37,6 @@ rl.on('line', (data) => {
         commandsList[cmdWithArgs.cmd]['action'](...cmdWithArgs.argsList)
           .then(() => console.log(''))
           .catch(err => {
-            // console.log('...catch');
             showError(err)
           })
           .finally(() => {
