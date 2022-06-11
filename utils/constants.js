@@ -28,6 +28,6 @@ export const commandsList = {
   rm: { action: fsAction.remove, minArgs: 1 },
   os: { action: osAction.osInfo, minArgs: 1, prefix: '--' },
   hash: { action: hashAction.hash, minArgs: 1 },
-  compress: { action: zipAction.compress, minArgs: 1 },
-  decompress: { action: zipAction.decompress, minArgs: 1 },
+  compress: { action: zipAction.compress, minArgs: 2 },
+  decompress: { action: zipAction.decompress, minArgs: 2 },
 }

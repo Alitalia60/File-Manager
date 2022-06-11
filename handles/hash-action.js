@@ -1,8 +1,6 @@
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 
-import { showError } from '../utils/errors.js';
-
 /**
 * calculate hash of fileURI 
 * @function hash 

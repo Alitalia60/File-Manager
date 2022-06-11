@@ -35,13 +35,13 @@ rl.on('line', (data) => {
 
       if (validateCmd(cmdWithArgs)) {
         commandsList[cmdWithArgs.cmd]['action'](...cmdWithArgs.argsList)
-          .then((data) => console.log('...then', data))
+          .then(() => console.log(''))
           .catch(err => {
-            console.log('...catch');
+            // console.log('...catch');
             showError(err)
           })
           .finally(() => {
-            console.log('...finally');
+            console.log('');
             showCurrentDir();
             rl.prompt()
           });

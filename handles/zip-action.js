@@ -1,5 +1,5 @@
 import { createBrotliCompress, createBrotliDecompress } from 'node:zlib';
-import { createReadStream, createWriteStream } from 'node:fs';
+import { stat, createReadStream, createWriteStream } from 'node:fs';
 
 /**
 * compress source to target 
@@ -9,16 +9,31 @@ import { createReadStream, createWriteStream } from 'node:fs';
 */
 export const compress = async (source, target) => {
 
-  // TODO check source exist
+  return await new Promise((res, rej) => {
+    stat(source, (err, stats) => {
+      if (err) {
+        rej(err)
+      }
+      else {
+        if (!stats.isFile()) {
+          rej(`${source}not a file`)
+        } else {
+          const sourceRS = createReadStream(source);
+          const targetWS = createWriteStream(target);
+          const compressStream = createBrotliCompress();
 
-  const sourceRS = createReadStream(source);
-  const targetWS = createWriteStream(target);
+          sourceRS.on('close', () => {
+            res()
+          });
 
-  const compressStream = createBrotliCompress();
-  sourceRS.pipe(compressStream)
-    .on('error', (err) => console.log(err))
-    .pipe(targetWS)
-    .on('error', (err) => console.log(err));
+          sourceRS.pipe(compressStream)
+            .on('error', (err) => rej(err))
+            .pipe(targetWS)
+            .on('error', (err) => rej(err));
+        }
+      }
+    })
+  });
 }
 
 /**
@@ -29,15 +44,31 @@ export const compress = async (source, target) => {
 */
 export const decompress = async (source, target) => {
 
-  // TODO check source exist
+  return await new Promise((res, rej) => {
+    stat(source, (err, stats) => {
+      if (err) {
+        rej(err)
+      }
+      else {
+        if (!stats.isFile()) {
+          rej(`${source}not a file`)
+        } else {
+          const sourceRS = createReadStream(source);
+          const targetWS = createWriteStream(target);
+          const deCompressStream = createBrotliDecompress();
 
-  const sourceRS = createReadStream(source);
-  const targetWS = createWriteStream(target);
+          sourceRS.on('close', () => {
+            res()
+          });
 
-  const deCompressStream = createBrotliDecompress();
-  sourceRS.pipe(deCompressStream)
-    .on('error', (err) => console.log(err))
-    .pipe(targetWS)
-    .on('error', (err) => console.log(err));
+          sourceRS.pipe(deCompressStream)
+            .on('error', (err) => rej(err))
+            .pipe(targetWS)
+            .on('error', (err) => rej(err));
+        }
+      }
+    })
+  });
 }
+
 
