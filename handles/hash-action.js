@@ -21,6 +21,7 @@ export const hash = async (fileURI) => {
         } else {
           const fileRS = fs.createReadStream(fileURI);
           fileRS.on('close', () => {
+            console.log();
             res()
           });
           fileRS.pipe(hash256)

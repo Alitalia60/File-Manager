@@ -10,7 +10,7 @@ import { showError } from './utils/errors.js';
 const rl = createInterface({
   input: process.stdin,
   output: process.stdout,
-  prompt: 'File Commander >> '
+  prompt: 'File Manager >> '
 });
 
 rl.prompt();
@@ -28,6 +28,11 @@ rl.on('line', (data) => {
     rl.close();
   } else {
     const cmdWithArgs = parseCmd(data);
+
+    // !! debug
+    // console.log(cmdWithArgs);
+    // !! debug
+
     if (cmdWithArgs.cmd) {
       if (validateCmd(cmdWithArgs)) {
         commandsList[cmdWithArgs.cmd]['action'](...cmdWithArgs.argsList)
