@@ -3,9 +3,9 @@ import os from 'node:os';
 import { mkdir } from 'fs/promises';
 import { fileURLToPath } from 'node:url';
 
-import { fcOptions, messages } from './constants.js';
+import { fcOptions, messages, logColors } from './constants.js';
 import { showCurrentDir } from './utils.js';
-import { changeFolder } from '../handles/dir-action.js';
+import { changeFolder } from '../handles/nwd-action.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,9 +18,9 @@ try {
   console.error(err);
 }
 
-console.log('************************************************');
-console.log(`${messages.welcome}!`);
-console.log('************************************************');
+console.log(logColors.white, '************************************************');
+console.log(logColors.green, `${messages.welcome}!`);
+console.log(logColors.white, '************************************************');
 
 changeFolder(fcOptions.currentDir);
 showCurrentDir();

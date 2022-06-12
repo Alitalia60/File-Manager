@@ -1,6 +1,6 @@
-// import fs from 'node:fs';
-import * as fsPromices from 'node:fs/promises';
 import fs from 'node:fs';
+import * as fsPromices from 'node:fs/promises';
+import path, { basename } from 'node:path';
 import { fcOptions } from '../utils/constants.js';
 
 /**
@@ -11,23 +11,11 @@ import { fcOptions } from '../utils/constants.js';
 export const cat = async (fileURI) => {
 
   return await new Promise((res, rej) => {
-    fs.stat(fileURI, (err, stats) => {
-      if (err) {
-        rej(err)
-      }
-      else {
-        if (!stats.isFile()) {
-          rej(`${fileURI}not a file`)
-        } else {
-          const fileRS = fs.createReadStream(fileURI);
-          fileRS.on('close', () => {
-            res()
-          });
-          fileRS.pipe(process.stdout)
-            .on('error', (err) => rej(err));
-        }
-      }
-    })
+    fs.createReadStream(fileURI)
+      .on('error', (err) => rej(err))
+      .on('close', () => res())
+      .pipe(process.stdout)
+      .on('error', (err) => rej(err));
   });
 }
 
@@ -38,6 +26,7 @@ export const cat = async (fileURI) => {
 * @param: {string} target - name of copy
 */
 export const cp = async (source, target) => {
+
   return await fsPromices.cp(source, target);
 }
 
@@ -46,20 +35,39 @@ export const cp = async (source, target) => {
 * @function ls 
 */
 export const ls = async () => {
+
   const files = await fsPromices.readdir(fcOptions.currentDir);
-  for (const file of files) {
-    console.log(file);
-  }
+  console.table(files);
 }
 
 /**
 * move file to new dir
 * @function mv 
-* @param: {string} source - old place
+* @param: {string} source - file to move
 * @param: {string} target - new place
 */
 export const mv = async (source, target) => {
-  return await fsPromices.cp(source, target).then(fsPromices.rm(source));
+
+  const sourcePath = path.resolve(source);
+  const targetPath = path.join(path.resolve(target), source);
+  console.log('sourcePath=', sourcePath, 'dirname=', path.dirname(sourcePath));
+  console.log('targetPath=', targetPath, 'dirname=', path.dirname(targetPath));
+
+  return await new Promise((res, rej) => {
+    if (path.dirname(sourcePath) === path.dirname(targetPath)) {
+      console.log(`can't copy to itself`);
+      rej(`can't copy to itself`)
+    }
+    else {
+      fs.copyFile(sourcePath, targetPath, (err) => {
+        if (err) rej(err)
+        else {
+          fs.rm(sourcePath, err => rej(err));
+          res();
+        };
+      });
+    }
+  });
 }
 
 /**
@@ -68,6 +76,7 @@ export const mv = async (source, target) => {
 * @param: {string} fileURI
 */
 export const remove = async (fileURI) => {
+
   return await fsPromices.rm(fileURI);
 }
 
@@ -78,8 +87,8 @@ export const remove = async (fileURI) => {
 * @param: {string} target - new name
 */
 export const rn = async (source, target) => {
-  return await fsPromices.rename(source, target);
 
+  return await fsPromices.rename(source, target);
 }
 
 /**
@@ -88,5 +97,6 @@ export const rn = async (source, target) => {
  * @param: {string} fileName 
  */
 export const add = async (fileName) => {
+
   return await fsPromices.appendFile(fileName, '')
 }

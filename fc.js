@@ -1,24 +1,24 @@
 import { createInterface } from 'node:readline';
 
-import { messages, commandsList, fcOptions } from './utils/constants.js';
+import { messages, commandsList, logColors } from './utils/constants.js';
 import { parseCmd } from './utils/cmd-parse.js';
 import './utils/init.js'
 import { showCurrentDir } from './utils/utils.js';
 import { validateCmd } from './validators/cmd-validate.js';
-import { FCError, showError } from './utils/errors.js';
-import { SourceMap } from 'node:module';
+import { showError } from './utils/errors.js';
 
 const rl = createInterface({
   input: process.stdin,
   output: process.stdout,
-  prompt: 'FC>> '
+  prompt: 'File Commander >> '
 });
 
 rl.prompt();
 
 rl.on('close', () => {
   rl.setPrompt('');
-  console.log(`${messages.bye}`);
+  console.log(logColors.blue, `${messages.bye}`);
+  console.log(logColors.white);
   rl.close();
 });
 
@@ -29,22 +29,21 @@ rl.on('line', (data) => {
   } else {
     const cmdWithArgs = parseCmd(data);
     if (cmdWithArgs.cmd) {
-
-      //!! debug -----------------
-      // console.log('cmdWithArgs=', cmdWithArgs);
-
       if (validateCmd(cmdWithArgs)) {
         commandsList[cmdWithArgs.cmd]['action'](...cmdWithArgs.argsList)
-          .then(() => console.log(''))
+          .then(() => console.log(logColors.green, 'Success'))
           .catch(err => {
-            showError(err)
+            showError(err);
           })
           .finally(() => {
             console.log('');
             showCurrentDir();
-            rl.prompt()
+            rl.prompt();
           });
-      }
+      } else {
+        showCurrentDir();
+        rl.prompt();
+      };
     } else {
       showCurrentDir();
       rl.prompt();

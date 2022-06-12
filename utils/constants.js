@@ -3,6 +3,15 @@ import * as osAction from '../handles/os-action.js'
 import * as hashAction from '../handles/hash-action.js'
 import * as dirAction from '../handles/nwd-action.js'
 import * as arhAction from '../handles/compress-action.js'
+
+
+export const logColors = {
+  white: '\x1b[37m',
+  yellow: '\x1b[33m',
+  green: '\x1b[32m',
+  blue: '\x1b[34m',
+  red: '\x1b[31m'
+}
 export const fcOptions = {
   currentDir: null,
   currentUser: null,

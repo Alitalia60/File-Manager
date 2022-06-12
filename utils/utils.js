@@ -1,17 +1,13 @@
-import { fcOptions, messages } from './constants.js';
+import { fcOptions, messages, logColors } from './constants.js';
 
 /**
 * @function showCurrentDir 
 */
-export const showCurrentDir = ()=> {
-  console.log(`${messages.homeFolder}${fcOptions.currentDir}\n`);
+export const showCurrentDir = () => {
+  console.log(logColors.yellow, `${messages.homeFolder}${fcOptions.currentDir}\n`);
+  console.log(logColors.white);
 }
 
-/**
-* @function sayBye 
-*/
-export function sayBye() {
-  rl.setPrompt('');
-  console.log(`${messages.bye}`);
-  rl.close();
+export const colorMessage = (color, mess) => {
+  console.log(color, mess);
 }
