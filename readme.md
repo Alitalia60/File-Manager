@@ -2,11 +2,11 @@
 
 For usage type at CLI:
 
-`node fc --username=SomeName`  where: `SomeName` - do not use spaces in username!! 
+`node ./fc.js -- --username=SomeName`  where: `SomeName` - do not use spaces in username!! 
 
 or
 
-`npm run start -- --username=SomeName`
+`npm run start-test`  (user name implemented for testing purpose)
 
 __Note__
 
