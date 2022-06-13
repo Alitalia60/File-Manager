@@ -1,60 +1,70 @@
 # File-Manager
 
-List of operations and their syntax:
+For usage type at CLI:
 
-**Navigation & working directory (nwd)**
-    - Go upper from current directory (when you are in the root folder this operation shouldn't change working directory)  
-    ```up```
+`node fc --username=SomeName`  where: `SomeName` - do not use spaces in username!! 
+
+or
+
+`npm run start -- --username=SomeName`
+
+__Note__
+
+If path includes spaces, it must use single or double quotas, for example:
+
+`cat "d:/Some path anywere/target file.txt"`
+
+or
+
+`rm 'e/Important document/file to delete.txt'`
+
+
+### List of operations and their syntax:
+
+#### Navigation & working directory (nwd)
+
+  **`up`** - Go upper from current directory (when you are in the root folder this operation shouldn't change working directory)  
+
+  **`cd`** `path_to_directory` - Go to dedicated folder from current directory (`path_to_directory` can be relative or absolute)
+
+  **`ls`** - List all files and folder in current directory and print it to console
+      
+
+#### Basic operations with files
+
+   **`cat`** `path_to_file` - Read file and print it's content in console
+
+   **`add`** `new_file_name` - Create empty file in current working directory
+       
+   **`rn`** `path_to_file new_filename` - Rename file
+
+   **`cp`** `path_to_file path_to_new_directory` - Copy file
+
+   **`mv`** `path_to_file path_to_new_directory` - Move file (same as copy but initial file is deleted)
+
+   **`rm`** `path_to_file` -  Delete file
+
+
+#### Operating system info (prints following information in console)
     
-    - Go to dedicated folder from current directory (`path_to_directory` can be relative or absolute): 
-    ```cd path_to_directory```
-
-    - List all files and folder in current directory and print it to console
-    ```ls```
-
-**Basic operations with files**
-    - Read file and print it's content in console: 
-    ```cat path_to_file```
-
-    - Create empty file in current working directory: 
-    ```add new_file_name```
+   **`os`** `--EOL`- Get EOL (default system End-Of-Line)  
     
-    - Rename file: 
-    ```rn path_to_file new_filename```
+   **`os`** `--cpus` - Get host machine CPUs info (overall amount of CPUS plus model and clock rate (in GHz) for each of them)  
     
-    - Copy file: 
-    ```cp path_to_file path_to_new_directory```
+   **`os`** `--homedir`- Get home directory: 
     
-    - Move file (same as copy but initial file is deleted): 
-    ```mv path_to_file path_to_new_directory```
+   **`os`** --username` - Get current *system user name* (Do not confuse with the username that is set when the application starts)  
+    
+   **`os`** --architecture` - Get CPU architecture for which Node.js binary has compiled  
+   
 
-    - Delete file: 
-    ```rm path_to_file```
+#### Hash calculation
+   
+   **`hash`** `path_to_file` - Calculate hash for file and print it into console
 
-**Operating system info (prints following information in console)**
-    - Get EOL (default system End-Of-Line)  
-    `os --EOL`
+#### Compress and decompress operations
+   
+   **`compress`** `path_to_file path_to_destination` - Compress file (using Brotli algorithm)
 
-    - Get host machine CPUs info (overall amount of CPUS plus model and clock rate (in GHz) for each of them)  
-    `os --cpus`
-
-    - Get home directory: 
-    ```os --homedir```
-
-    - Get current *system user name* (Do not confuse with the username that is set when the application starts)  
-    ```os --username```
-
-    - Get CPU architecture for which Node.js binary has compiled  
-    ```os --architecture```
-
-**Hash calculation**
-    - Calculate hash for file and print it into console  
-    ```hash path_to_file```
-
-**Compress and decompress operations**
-    - Compress file (using Brotli algorithm)  
-    ```compress path_to_file path_to_destination```
-
-    - Decompress file (using Brotli algorithm)  
-    ```decompress path_to_file path_to_destination```
+   **`decompress`** `path_to_file path_to_destination` - Decompress file (using Brotli algorithm)
     
