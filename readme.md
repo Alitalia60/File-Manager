@@ -6,11 +6,19 @@ For usage type at CLI:
 
 or
 
-`npm run start-test`  (user name implemented for testing purpose)
+`npm run start-test`  (user name implemented for testing purpose).
 
-__Note__
+__Note__ (if you check task contact me, please, by discord: @Alitalia22#5200)
 
-If path includes spaces, it must use single or double quotas, for example:
+- ___There is mistake in line 12 of 'init.js'___
+
+`fcOptions.currentUser = process.argv[3].replace('--username=', '');`
+
+must be 
+
+`fcOptions.currentUser = process.argv[2].replace('--username=', '');`
+
+- ___If path includes spaces, it must use single or double quotas, for example:___
 
 `cat "d:/Some path anywere/target file.txt"`
 
