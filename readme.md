@@ -10,6 +10,8 @@ or
 
 __Note__ (if you check task contact me, please, by discord: @Alitalia22#5200)
 
+- Home dir is creating equal to `username` on start. It is specially, it is NOT mistake !!!. 
+
 - ___There is mistake in line 12 of 'init.js'___
 
 `fcOptions.currentUser = process.argv[3].replace('--username=', '');`
