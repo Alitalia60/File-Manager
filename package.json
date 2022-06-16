@@ -1,0 +1,25 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "FIle commander task (RSSchool Node.JS course)",
+  "main": "fc.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./fc.js",
+    "start-test": "node ./fc.js -- --username=Alita"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alitalia60/File-Manager.git"
+  },
+  "keywords": [
+    "RSSchool",
+    "commander"
+  ],
+  "author": "Andrew Litvinov <lita.private@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alitalia60/File-Manager/issues"
+  },
+  "homepage": "https://github.com/Alitalia60/File-Manager#readme"
+}
